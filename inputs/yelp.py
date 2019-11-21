@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 # Ask for access to Yelp 
 # Using token which is in a getenv file
 def make_yelp_api_call(params):
+    '''calls YELP API'''
     load_dotenv()
     api_key= os.getenv('YELP_API_KEY')
     headers = {'Authorization': f'Bearer {api_key}'}
@@ -20,14 +21,13 @@ def get_airports(city):
     airports = make_yelp_api_call({'categories':'airports','location':city})
     return [a for a in airports if a['categories'][0]['alias'] == 'airports'] 
 
-
-# Get information of Starbucks based on a specific city
 def get_starbucks(city):
+    '''get information of Starbucks based on a specific city'''
     return make_yelp_api_call({'term': 'Starbucks', 'location': city})
 
 
-# Get information of restaurants based on a specific city
 def get_vegan_restaurants(city):
+    '''get information of restaurants based on a specific city'''
     return make_yelp_api_call({'term': 'vegan', 'location': city})
 
 

@@ -5,8 +5,21 @@ from bson import SON
 
 import yelp
 
+
+# with these lines of code you can:
+# 0) generate a new collection using Crunchbase Mongodb and based on this new collection:
+# 1) find out which is the best city where to locate your company
+# 2) get the information extracted from yelp for Starbucks, airports and vegan restaurants 
+# 3) weights potencial offices to place your company based on Starbucks at 500 meters, restaurants 1 km, airports 30 km
+# 4) assigns 1 to offices which satisfy every criteria so 1 for restaurant , 1 for Starbucks
+# 5) sums the total amount of points for each office 
+# 6) avoids a 'tie' situation by sorting the database by which company has most employees
+# 7) returns a location based on the winner
+
+
 def filter_companies(db, collection, new_collection):
-    db[new_collection].drop()
+    '''creates new collection based on criteria and also the 2dsphere Indexes for offices locations'''
+    
     db[collection].aggregate([
         {'$unwind': '$funding_rounds'},
         {'$group': {
@@ -20,7 +33,7 @@ def filter_companies(db, collection, new_collection):
         }},
         {'$match': {'$and': [
             {'deadpooled_year': None},
-            {'funding_sum': {'$gt': 1_000_000}},
+            {'funding_sum': {'$gt': 1000000}},
             {'founded_year': {'$gte': 2000}},
             {'number_of_employees': {'$gte': 50}}
         ]}},
@@ -62,8 +75,8 @@ def get_punctuation(db, collection, city):
         columns=['name', 'employees', 'loc']
     )
     distances = {
-        'airports': 30_000,
-        'restaurants': 1_000,
+        'airports': 30000,
+        'restaurants': 1000,
         'starbucks': 500
     }
     data = {
@@ -96,4 +109,6 @@ def find_the_right_location(df):
     for i in [3, 2, 1, 0]:
         df_total = df[df['total'] == i]
         if len(df_total) != 0:
-            return df_total.sort_values('employees', ascending=False).iat[0, 2]['coordinates']
+            punctuation = df_total.sort_values('employees', ascending=False)
+            return [punctuation.iat[0, 0], [punctuation.iat[0, 2]['coordinates'][1], punctuation.iat[0, 2]['coordinates'][0]]]
+
