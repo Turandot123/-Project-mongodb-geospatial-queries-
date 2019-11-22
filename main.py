@@ -10,7 +10,7 @@ def main():
     db = client.companies
     src.mongo.filter_companies(db, 'companies', 'results')
     punctuation = src.mongo.get_punctuation(db, 'results', src.mongo.get_city(db, 'results'))
-    print(src.mongo.find_the_right_location(punctuation))
+    print('Office will be where office of this company is:', src.mongo.find_the_right_location(punctuation))
 
 if __name__ == '__main__':
     main()
