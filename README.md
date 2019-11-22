@@ -56,4 +56,4 @@ D. Execution of project
 
 In terminal you call main.py with python3 -m main and it will come with the name of company and coordinates
 In visualization you can check some parts of the intermediate results and also the map where office is located with follium
-In output folder I hosted a picture of the map 
+In output folder I hosted a picture of the map and also some details of Globant the company that has offices in SanFran where you will be based yours. Globant is a traded company in software which makes a lot of sense since our company is a gaming company and may need to buy products of Globant
