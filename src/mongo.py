@@ -3,7 +3,7 @@ from pymongo import MongoClient, GEOSPHERE
 import pandas as pd
 from bson import SON
 
-import yelp
+import src.yelp
 
 
 # with these lines of code you can:
@@ -80,9 +80,9 @@ def get_punctuation(db, collection, city):
         'starbucks': 500
     }
     data = {
-        'airports': yelp.get_airports(city),
-        'restaurants': yelp.get_vegan_restaurants(city),
-        'starbucks': yelp.get_starbucks(city)
+        'airports': src.yelp.get_airports(city),
+        'restaurants': src.yelp.get_vegan_restaurants(city),
+        'starbucks': src.yelp.get_starbucks(city)
     }
     for kind, listing in data.items():
         df[kind] = 0
